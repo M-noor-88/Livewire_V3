@@ -31,13 +31,13 @@ new class extends Component
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard') }}
+                        {{ __('message.dashboard') }}
                     </x-nav-link>
 
                     <x-nav-link :href="route('tasks.index' , ['filter' => 'mine'])" :active="request('filter') === 'mine'" wire:navigate
                                 :class="request('filter') === 'mine' ? 'border-indigo-600 text-indigo-600' : ''"
                     >
-                        {{ __('My Tasks') }}
+                        {{ __('message.my-tasks') }}
                     </x-nav-link>
 
                     <x-nav-link
@@ -46,7 +46,7 @@ new class extends Component
                         wire:navigate
                         :class="request('filter') === 'all' ? 'border-indigo-600 text-indigo-600' : ''"
                     >
-                        {{ __('All Tasks') }}
+                        {{ __('message.all-tasks') }}
                     </x-nav-link>
 
 
@@ -71,6 +71,31 @@ new class extends Component
                 </x-nav-link>
 
 
+                <!-- languages -->
+                    <x-dropdown align="right" width="48">
+                        <x-slot name="trigger">
+                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                @php($languages = ["en"=> "English" , "ar" => "عربي"])
+                                <div>Language {{ \Illuminate\Support\Facades\Session::get('locale' , 'en') }}</div>
+
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </x-slot>
+
+                        <x-slot name="content">
+                            <x-dropdown-link :href="route('lang.change' , ['lang'=> 'en'])"  wire:navigate >
+                                {{ __('English') }}
+                            </x-dropdown-link>
+
+                            <x-dropdown-link :href="route('lang.change' , ['lang'=> 'ar'])"  wire:navigate>
+                                {{ __('عربي') }}
+                            </x-dropdown-link>                        </x-slot>
+
+                    </x-dropdown>
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
