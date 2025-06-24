@@ -26,6 +26,17 @@
                 </div>
 
                 <livewire:task.task-list />
+
+
+
+{{--                <livewire:chat :receiverId="2" />--}}
+                @php
+                    $users = App\Models\User::where('id', '!=', auth()->id())->get();
+                @endphp
+                @foreach ($users as $user)
+                    <livewire:chat :receiverId="$user->id" :key="$user->id" />
+                @endforeach
+
             </div>
 
         </div>
