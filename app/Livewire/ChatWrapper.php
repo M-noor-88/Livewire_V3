@@ -25,6 +25,6 @@ class ChatWrapper extends Component
 
     public function render()
     {
-        return view('livewire.chat-wrapper')->layout('layouts.app'); // unified layout
+        return view('livewire.chat-wrapper');
     }
 }
