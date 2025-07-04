@@ -30,8 +30,15 @@
             <!-- Page Content -->
             <main>
 
+                {{-- In components/layouts/app.blade.php --}}
+                 <div class="bg-green-100 text-green-800 p-2">USING: layouts/app</div>
                 {{ $slot }}
             </main>
         </div>
+
+        {{-- This will include the script from the Livewire component --}}
+        @stack('scripts')
+
+        @livewireScripts
     </body>
 </html>

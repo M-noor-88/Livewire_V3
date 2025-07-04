@@ -29,37 +29,65 @@ window.Echo = new Echo({
     //     }
     // }
 });
-
-
-window.Echo.connector.pusher.connection.bind('connected', () => {
-    console.log('Pusher connected!');
-});
-
-window.Echo.private('private-chat.1.2').subscription.bind('pusher:subscription_succeeded', () => {
-    console.log('Subscribed to private-chat.1.2 channel successfully!');
-});
-
-window.Echo.private('private-chat.2.2').subscription.bind('pusher:subscription_error', (err) => {
-    console.error('Failed to subscribe to private-chat.2.2 channel:', err);
-});
-
-// let myId = 1;      // logged in user ID
-// let friendId = 2;  // receiver ID
 //
-// window.Echo.private(`private-chat.${friendId}.${myId}`)
-//     .listen('.private-message.sent', (data) => {
-//         console.log("Received private message:", data.message);
-//         alert(`New Message: ${data.message}`);
+//
+// window.Echo.connector.pusher.connection.bind('connected', () => {
+//     console.log('Pusher connected!');
+// });
+//
+// window.Echo.private('private-chat.1.2').subscription.bind('pusher:subscription_succeeded', () => {
+//     console.log('Subscribed to private-chat.1.2 channel successfully!');
+// });
+//
+// window.Echo.private('private-chat.2.2').subscription.bind('pusher:subscription_error', (err) => {
+//     console.error('Failed to subscribe to private-chat.2.2 channel:', err);
+// });
+//
+//
+// window.Echo.private('private-chat.2.1')
+//     .subscribed(() => {
+//         console.log('Subscribed to private chat.2.1 channel successfully!');
+//     })
+//     .error((error) => {
+//         console.error('Failed to subscribe to private chat.2.2 channel:', error);
+//     })
+//     .listen('message-sent', (data) => {
+//         console.log('Test message received:', data);
 //     });
 
 
-window.Echo.private('private-chat.2.1')
-    .subscribed(() => {
-        console.log('Subscribed to private chat.2.1 channel successfully!');
-    })
-    .error((error) => {
-        console.error('Failed to subscribe to private chat.2.2 channel:', error);
-    })
-    .listen('message-sent', (data) => {
-        console.log('Test message received:', data);
-    });
+const fromId = window.authUserId;
+const toId = window.chatReceiverId;
+
+console.log("From ID: ", fromId);
+console.log("To ID: ", toId);
+
+if (fromId && toId) {
+    // First channel: current user sending to friend
+    window.Echo.private(`private-chat.${fromId}.${toId}`)
+        .subscribed(() => {
+            console.log(`Subscribed to private-chat.${fromId}.${toId}`);
+        })
+        .listen('.message-sent', (data) => {
+            console.log('Message received:', data);
+        })
+        .listen('.user-typing', (data) => {
+            console.log(`User ${data.from_user_id} is typing...`);
+            Livewire.dispatch('typing-received', { userId: data.from_user_id });
+        });
+
+    // Second channel: reverse direction
+    window.Echo.private(`private-chat.${toId}.${fromId}`)
+        .subscribed(() => {
+            console.log(`Subscribed to private-chat.${toId}.${fromId}`);
+        })
+        .listen('.message-sent', (data) => {
+            console.log('Message received (reverse):', data);
+        })
+        .listen('.user-typing', (data) => {
+            console.log(`User ${data.from_user_id} is typing (reverse)...`);
+            Livewire.dispatch('typing-received', { userId: data.from_user_id });
+        });
+} else {
+    console.warn('authUserId or chatReceiverId is undefined – skipping private channel subscription.');
+}

@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Events\MessageSent;
+use App\Events\UserTyping;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -51,6 +52,29 @@ class Chat extends Component
         $this->message = '';
     }
 
+    public $isTyping = false;
+    public function typing()
+    {
+        Log::info("Typing !!");
+        broadcast(new UserTyping(Auth::id(), $this->receiverId))->toOthers();
+    }
+
+    public function showTyping($data)
+    {
+        $this->isTyping = true;
+
+        Log::info("Show Typing Functioon");
+        // Reset after 3 seconds
+        //$this->dispatch('clear-typing')->later(now()->addSeconds(3));
+    }
+
+
+    public function resetTyping()
+    {
+        $this->isTyping = false;
+    }
+
+
     public function getListeners()
     {
         $fromId = auth()->id();
@@ -59,6 +83,9 @@ class Chat extends Component
         return [
             "echo-private:private-chat.{$fromId}.{$toId},.message-sent" => 'messageReceived',
 //            "echo-private:private-chat.{$toId}.{$fromId},.message-sent" => 'messageReceived',
+            "echo-private:private-chat.{$toId}.{$fromId},.user-typing" => 'showTyping',
+            "echo-private:private-chat.{$fromId}.{$toId},.user-typing" => 'showTyping',
+
         ];
 
     }

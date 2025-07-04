@@ -16,5 +16,21 @@ window.Echo = new Echo({
 
 
 
+Livewire.hook('message.sent', (message, component) => {
+    const socketId = window.Echo.socketId();
+    if (socketId) {
+        message.updateQueue = [
+            {
+                ...message.updateQueue[0],
+                payload: {
+                    ...message.updateQueue[0].payload,
+                    _socket: socketId,
+                },
+            },
+        ];
+    }
+});
+
+
 
 

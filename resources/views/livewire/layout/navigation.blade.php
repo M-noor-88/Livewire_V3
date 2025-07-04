@@ -50,6 +50,17 @@ new class extends Component
                     </x-nav-link>
 
 
+                    <x-nav-link :href="route('messages')" :active="request()->routeIs('messages')" wire:navigate>
+                        {{ __('💬 Messages') }}
+                    </x-nav-link>
+
+{{--                    <li>--}}
+{{--                        <a href="{{ route('messages') }}"--}}
+{{--                           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">--}}
+{{--                            💬 Messages--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
+
 
 
                 </div>

@@ -30,6 +30,9 @@
 
     <!-- Page Content -->
     <main>
+        {{-- In layouts/app.blade.php --}}
+         <div class="bg-red-100 text-red-800 p-2">USING: Component/layouts/app</div>
+
         {{ $slot }}
     </main>
 </div>
