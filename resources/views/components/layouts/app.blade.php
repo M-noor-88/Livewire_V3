@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+    @livewireStyles
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -29,8 +30,12 @@
 
     <!-- Page Content -->
     <main>
+        {{-- In layouts/app.blade.php --}}
+         <div class="bg-red-100 text-red-800 p-2">USING: Component/layouts/app</div>
+
         {{ $slot }}
     </main>
 </div>
+    @livewireScripts
 </body>
 </html>

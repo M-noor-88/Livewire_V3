@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\TaskExportController;
+use App\Livewire\ChatWrapper;
 use App\Livewire\Task\CreateTask;
 use App\Livewire\Task\EditTask;
 use App\Livewire\Task\TaskList;
@@ -32,6 +33,11 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/tasks/{id}/edit', EditTask::class)
     ->middleware('auth')
     ->name('tasks.edit');
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/messages', ChatWrapper::class)->name('messages');
+});
 
 
 require __DIR__.'/auth.php';
