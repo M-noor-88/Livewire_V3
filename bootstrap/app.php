@@ -16,7 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->append(UpdateLastSeen::class);
         $middleware->web(append: [
-            SetLocale::class
+            SetLocale::class,
+            UpdateLastSeen::class
         ]);
 //        $middleware->append(\Illuminate\Session\Middleware\StartSession::class);
 //        $middleware->append(SetLocale::class);

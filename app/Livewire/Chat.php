@@ -59,19 +59,28 @@ class Chat extends Component
         broadcast(new UserTyping(Auth::id(), $this->receiverId))->toOthers();
     }
 
+//    public function showTyping($data)
+//    {
+//        $this->isTyping = true;
+//
+//        Log::info("Show Typing Functioon");
+//        // Reset after 3 seconds
+//        //$this->dispatch('clear-typing')->later(now()->addSeconds(3));
+//    }
+
+
+
     public function showTyping($data)
     {
-        $this->isTyping = true;
-
         Log::info("Show Typing Functioon");
-        // Reset after 3 seconds
-        //$this->dispatch('clear-typing')->later(now()->addSeconds(3));
+        $this->isTyping = true;
     }
 
 
     public function resetTyping()
     {
         $this->isTyping = false;
+
     }
 
 
