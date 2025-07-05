@@ -92,7 +92,7 @@
                         <img src="https://ui-avatars.com/api/?name=U{{ $msg['from_user_id'] }}" class="w-8 h-8 rounded-full shadow-md ring-1 ring-white/30">
 
                         <div class="
-                            px-5 py-3 rounded-2xl shadow-md
+                            px-5 py-3 rounded-2xl shadow-md transition-all duration-300 transform animate-fade-in-up
                             {{ $msg['from_user_id'] === auth()->id()
                                 ? 'bg-gradient-to-br from-blue-600 to-blue-800 text-white'
                                 : 'bg-emerald-200  text-gray-900' }}
@@ -111,7 +111,7 @@
     <!-- Typing Indicator -->
     <div wire:poll.1000ms="resetTyping">
         @if($isTyping)
-            <div class="px-6 py-2 text-sm italic text-gray-600 bg-white/20 backdrop-blur">
+            <div class="px-6 py-2 text-sm italic text-gray-600 bg-white/20 backdrop-blur transition-all duration-300 transform animate-fade-in-up">
                 Typing…
             </div>
         @endif

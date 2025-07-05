@@ -43,6 +43,7 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
+            'last_seen_at' => 'datetime',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
@@ -70,4 +71,16 @@ class User extends Authenticatable
     {
         return $this->last_seen_at && $this->last_seen_at->gt(now()->subMinutes(5));
     }
+
+    public function lastMessageWith($userId)
+    {
+        return Message::where(function ($q) use ($userId) {
+            $q->where('from_user_id', $this->id)
+                ->where('to_user_id', $userId);
+        })->orWhere(function ($q) use ($userId) {
+            $q->where('from_user_id', $userId)
+                ->where('to_user_id', $this->id);
+        })->latest('created_at')->first();
+    }
+
 }
