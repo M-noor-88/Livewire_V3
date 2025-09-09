@@ -14,7 +14,6 @@ class ChatWrapper extends Component
 
     public function mount()
     {
-//        $this->users = User::where('id', '!=', Auth::id())->get();
         $authId = auth()->id();
 
         $this->users = User::where('id', '!=', $authId)
