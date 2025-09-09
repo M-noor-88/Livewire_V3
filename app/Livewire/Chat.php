@@ -11,13 +11,13 @@ use Livewire\Component;
 
 class Chat extends Component
 {
-    public $messages = [];
-    public $message = '';
+    public array $messages = [];
+    public string $message = '';
     public $receiverId;
 
    // protected $listeners = ['echo-private:chat.' . '{fromUserId}.' . '{toUserId},MessageSent' => 'messageReceived'];
 
-    public function mount($receiverId)
+    public function mount($receiverId): void
     {
         $this->receiverId = $receiverId;
 
@@ -32,7 +32,7 @@ class Chat extends Component
 
     }
 
-    public function sendMessage()
+    public function sendMessage(): void
     {
         $this->validate([
             'message' => 'required|string|max:1000',
@@ -52,25 +52,18 @@ class Chat extends Component
         $this->message = '';
     }
 
-    public $isTyping = false;
-    public function typing()
+    public bool $isTyping = false;
+    public function typing(): void
     {
         Log::info("Typing !!");
         broadcast(new UserTyping(Auth::id(), $this->receiverId))->toOthers();
     }
 
-//    public function showTyping($data)
-//    {
-//        $this->isTyping = true;
-//
-//        Log::info("Show Typing Functioon");
-//        // Reset after 3 seconds
-//        //$this->dispatch('clear-typing')->later(now()->addSeconds(3));
-//    }
 
 
 
-    public function showTyping($data)
+
+    public function showTyping($data): void
     {
         Log::info("Show Typing Functioon");
         $this->isTyping = true;
@@ -84,21 +77,19 @@ class Chat extends Component
     }
 
 
-    public function getListeners()
+    public function getListeners(): array
     {
         $fromId = auth()->id();
         $toId = $this->receiverId;
-//        dd("echo-private:private-chat.$fromId.$toId,.message-sent messageReceived");
         return [
             "echo-private:private-chat.{$fromId}.{$toId},.message-sent" => 'messageReceived',
-//            "echo-private:private-chat.{$toId}.{$fromId},.message-sent" => 'messageReceived',
             "echo-private:private-chat.{$toId}.{$fromId},.user-typing" => 'showTyping',
             "echo-private:private-chat.{$fromId}.{$toId},.user-typing" => 'showTyping',
 
         ];
 
     }
-    public function messageReceived($payload)
+    public function messageReceived($payload): void
     {
         if ((int)$payload['from_user_id'] === Auth::id()) {
             return;
